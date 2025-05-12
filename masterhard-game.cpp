@@ -9,6 +9,8 @@ int main() {
 	int digits = 4;
 	string mode = "Normal";
 
+	while (enter != 0){
+
 	cout << endl << "          MASTERHARD" << endl << endl;
 	cout << "1.PLAY" << endl;
 	cout << "2.DIFFICULTY" << endl;
@@ -18,21 +20,17 @@ int main() {
 	cin >> enter;
 	system("clear");
 
-
 	if (enter == 1) {
 		// Game
 		cout << endl << "          MASTERHARD" << endl << endl;
-		cout << "Try: " << tryy << " " << "Mode: " << mode << " Digits: " << digits << endl;
-		cout << "2.DIFFICULTY" << endl;
-		cout << "3.NUMBER OF THE DAY" << endl;
-		cout << "4.ABOUT" << endl;
-		cout << "0.EXIT GAME" << endl;
+		cout << "| Try: " << tryy << " " << "| Mode: " << mode << " | Digits: " << digits << " |" << endl;
 		cin >> enter;
 		
-		if (enter == 0){
-		    system("clear");
-		    main();
+		if (enter == 4){
+		    cout << "oi teste";
+		    cin >> enter;
 		}
+		system("clear");
 	}
 	else if (enter == 2) {
 		//dificuldade
@@ -41,16 +39,30 @@ int main() {
 		cout << "2.NORMAL" << endl;
 		cout << "3.DIFFICULT" << endl;
 		cout << "4.HARDCORE MERMAO" << endl;
-		cout << "[ANYKEY].BACK";
 		cin >> enter;
+		
+		if (enter == 1){
+		    mode = "Easy";
+		}
+		else if (enter == 2){
+		    mode = "Normal";
+		}
+		else if (enter == 3){
+		    mode = "Difficult";
+		}
+		else if (enter == 4){
+		    mode = "HardCore Mermao";
+		}
 		system("clear");
 	}
 	else if (enter == 3) {
 		// NUMERO DO DIA
 		cout << "3";
+		cin >> enter;
+		system("clear");
 	}
 	else if (enter == 4) {
-		cout << endl << "       MasterHard         " << endl << endl;
+		cout << endl << "         ABOUT         " << endl << endl;
 		cout << "Desenvolvido por Herick Betin Tiburski" << endl;
 		cout << "e Mileny Beatrice Benner" << endl;
 		cout << "Maio/2025" << endl;
@@ -66,20 +78,16 @@ int main() {
 		cout << "- Objetivo: acertar a sequencia antes que as tentativas acabem." << endl;
 		cout << endl;
 		cout << "Boa sorte!" << endl;
-		cout << "0.BACK";
 		cin >> enter;
-		
-		if (enter == 0){
-		    system("clear");
-		    main();
-		}
+		system("clear");
+	    
 	}
-
-
-		if (enter == 5) {
-			return 0;
-		}
-
+	else if (enter == 5){
+	    cout << "Exiting...";
+	    return 0;
+	}
+    
 	enter = 10;
+}
 }
 
