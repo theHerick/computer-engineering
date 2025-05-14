@@ -49,9 +49,28 @@ int main() {
             }
             else if (v4 == 0){
                 v4 = 5;
-            }
-			cout << r << " " << v1 << " " << v2 << " " << v3 << " " << v4 << endl;
+            } 
+            
+            // resposta do jogador
+            int r1, r2, r3, r4;
+            int c1, c2, c3, c4; // se tiver certo = 1 errado = 0 posicao errada = 2
+			cout << "Digite seu palpite: " << r;
 			cin >> enter;
+			
+			r1 = enter / 1000;
+			r2 = enter % 1000 / 100;
+			r3 = enter % 100 / 10;
+			r4 = enter % 10 / 1;
+			
+			if (r1 == v1){
+			    c1 = 1;
+			}
+			else if (r1 == v2 || v3 || v4){
+			    c1 = 2;
+			}
+			
+		cout << c1;
+			
 		}
 		else if (enter == 2) {
 			//dificuldade
@@ -110,4 +129,3 @@ int main() {
 
 		enter = 10;
 	}
-}
