@@ -1,8 +1,4 @@
-#include <iostream>
-#include <time.h>
-using namespace std;
-
-int main() {
+{
 
 	int enter = 10;
 	int tryy = 10;
@@ -41,13 +37,13 @@ int main() {
             if (v1 == 0){
                 v1 = 5;
             }
-            else if (v2 == 0){
+            if (v2 == 0){
                 v2 = 5;
             }
-            else if (v3 == 0){
+            if (v3 == 0){
                 v3 = 5;
             }
-            else if (v4 == 0){
+            if (v4 == 0){
                 v4 = 5;
             } 
             
@@ -65,8 +61,11 @@ int main() {
 			if (r1 == v1){
 			    c1 = 1;
 			}
-			else if (r1 == v2 || v3 || v4){
+			else if (r1 == v2){
 			    c1 = 2;
+			} 
+			else {
+			    c1 = 0;
 			}
 			
 		cout << c1;
@@ -129,3 +128,4 @@ int main() {
 
 		enter = 10;
 	}
+}
