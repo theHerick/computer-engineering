@@ -91,7 +91,7 @@ int main() {
 			int r0, r1, r2, r3, r4;
 			int c1 = 0;//certo
 			int e1 = 0;// posicao errada
-			cout << "Digite seu palpite: "<< v0 << v1 << v2 << v3 << v4 << endl;
+			cout << "Digite seu palpite: " << endl;
 			
 // ╔══════════════════════════════════════╗
 // ║   QUANTIDADE DE DIGITOS PERMITIDOS   ║
@@ -221,10 +221,13 @@ int main() {
 //       ╚═══║           SE FOR 4 DIGITOS           ║
 //           ╚══════════════════════════════════════╝
 
-					if (digits == 4) {
+                    if (r0 > 6 || r1 > 6 || r2 > 6 || r3 > 6 || r4 > 6){
+                        cout << "Somente numeros entre 1 a 6!" << endl;
+                    }
+					else if (digits == 4) {
 
 						cout << tentativas << "º tentativa ---> ";
-						cout << "Corretos: " << c1 << " Posicao errada: " << e1 << " Errados: " << 4-(c1+e1) << endl;
+						cout << "Corretos: " << c1 << " Posicao errada: " << e1 << endl;
 						c1 = 0;
 						e1 = 0;
 
@@ -253,7 +256,7 @@ int main() {
 					else if (digits == 5) {
 
 						cout << tentativas << "º tentativa ---> ";
-						cout << "Corretos: " << c1 << " Posicao errada: " << e1 << " Errados: " << 5-(c1+e1) << endl;
+						cout << "Corretos: " << c1 << " Posicao errada: " << e1 << endl;
 						c1 = 0;
 						e1 = 0;
 
@@ -281,7 +284,7 @@ int main() {
 					else if (digits == 3) {
 
 						cout << tentativas << "º tentativa ---> ";
-						cout << "Corretos: " << c1 << " Posicao errada: " << e1 << " Errados: " << 3-(c1+e1) << endl;
+						cout << "Corretos: " << c1 << " Posicao errada: " << e1 << endl;
 						c1 = 0;
 						e1 = 0;
 
@@ -359,7 +362,7 @@ int main() {
 			cout << "Professor: Thiago Felski" << endl;
 			cout << endl;
 			cout << "Regras do jogo:" << endl;
-			cout << "- O sistema gera aleatoriamente uma sequencia secreta com 4 numeros, sem repeticoes." << endl;
+			cout << "- O sistema gera aleatoriamente uma sequencia secreta com 4 numeros, sem repeticoes de 1 a 6." << endl;
 			cout << "- O jogador tem um numero limitado de tentativas para descobrir essa sequencia." << endl;
 			cout << "- A cada tentativa feita:" << endl;
 			cout << "    * O jogo informa quantos elementos estao na posicao correta." << endl;
