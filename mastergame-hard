@@ -1,5 +1,4 @@
-//DEV: HERICK BETIN TIBURSKI // 25/05/2025
-
+//DEV: HERICK BETIN TIBURSKI //25/05/2025
 #include <iostream>
 #include <time.h>
 using namespace std;
@@ -134,84 +133,7 @@ int main() {
 					r3 = enter % 100 / 10;
 					r4 = enter % 10 / 1;
 
-					// Verificadores
-					//zero
 
-					if (r0 == v0) {
-						c1++;
-					}
-					else if (r0 == v2) {
-						e1++;
-					}
-					else if (r0 == v3) {
-						e1++;
-					}
-					else if (r0 == v4) {
-						e1++;
-					}
-
-					// primeiro
-
-					if (r1 == v1) {
-						c1++;
-					}
-					else if (r1 == v2) {
-						e1++;
-					}
-					else if (r1 == v3) {
-						e1++;
-					}
-					else if (r1 == v4) {
-						e1++;
-					}
-
-
-					// segundo
-
-					if (r2 == v2) {
-						c1++;
-					}
-					else if (r2 == v1) {
-						e1++;
-					}
-					else if (r2 == v3) {
-						e1++;
-					}
-					else if (r2 == v4) {
-						e1++;
-					}
-
-
-					// terceiro
-
-					if (r3 == v3) {
-						c1++;
-					}
-					else if (r3 == v2) {
-						e1++;
-					}
-					else if (r3 == v1) {
-						e1++;
-					}
-					else if (r3 == v4) {
-						e1++;
-					}
-
-					// quarto
-
-					if (r4 == v4) {
-						c1++;
-					}
-					else if (r4 == v2) {
-						e1++;
-					}
-					else if (r4 == v3) {
-						e1++;
-					}
-					else if (r4 == v1) {
-						e1++;
-					}
-					
 // ╔══════════════════════════════════════╗
 // ║        VERIFICADOR DE RESPOSTA       ║
 // ╚══════════════════════════════════════╝
@@ -226,7 +148,65 @@ int main() {
                         cout << "Somente numeros entre 1 a 6!" << endl;
                     }
 					else if (digits == 4) {
-
+					    
+					    // verificadores 
+					    // r1
+					    if (r1 == v1) {
+			    		    c1++;
+					    }
+					    else if (r1 == v2) {
+					    	e1++;
+					    }
+					    else if (r1 == v3) {
+					    	e1++;
+					    }
+					    else if (r1 == v4) {
+					    	e1++;
+				    	}
+                        
+                        // r2
+                        if (r2 == v2) {
+					    	c1++;
+				    	}
+				    	else if (r2 == v1) {
+					    	e1++;
+					    }
+				    	else if (r2 == v3) {
+				    		e1++;
+				    	}
+				    	else if (r2 == v4) {
+				    		e1++;
+					    }
+					    
+					    //r3 
+					    if (r3 == v3) {
+					    	c1++;
+					    }
+				    	else if (r3 == v2) {
+					    	e1++;
+				    	}
+				    	else if (r3 == v1) {
+				    		e1++;
+				    	}
+				    	else if (r3 == v4) {
+				    		e1++;
+				    	}   
+				    	
+				    	//r4 
+				    	if (r4 == v4) {
+					    	c1++;
+				    	}
+				    	else if (r4 == v2) {
+				    		e1++;
+				    	}
+				    	else if (r4 == v3) {
+				    		e1++;
+				    	}
+				    	else if (r4 == v1) {
+				    		e1++;
+				    	}
+				    	
+				    	
 						cout << tentativas << "º tentativa ---> ";
 						cout << "Corretos: " << c1 << " Posicao errada: " << e1 << endl;
 						c1 = 0;
@@ -257,6 +237,92 @@ int main() {
 //           ╚══════════════════════════════════════╝
 
 					else if (digits == 5) {
+					    
+					    // verificadores 
+					    
+					    if (r0 == v0) {
+				    		c1++;
+				    	}
+				    	else if (r0 == v1){
+				    	    e1++;
+				    	}
+				    	else if (r0 == v2) {
+					    	e1++;
+					    }
+					    else if (r0 == v3) {
+					    	e1++;
+				    	}
+				    	else if (r0 == v4) {
+					    	e1++;
+					    }
+					    
+					    // r1
+					    if (r1 == v1) {
+			    		    c1++;
+					    }
+					    else if (r1 == v2) {
+					    	e1++;
+					    }
+					    else if (r1 == v3) {
+					    	e1++;
+					    }
+					    else if (r1 == v4) {
+					    	e1++;
+				    	}
+				    	else if (r1 == v0){
+				    	    e1++;
+				    	}
+                        
+                        // r2
+                        if (r2 == v2) {
+					    	c1++;
+				    	}
+				    	else if (r2 == v1) {
+					    	e1++;
+					    }
+				    	else if (r2 == v3) {
+				    		e1++;
+				    	}
+				    	else if (r2 == v4) {
+				    		e1++;
+					    }
+					    else if (r2 == v0){
+				    	    e1++;
+				    	}
+					    
+					    //r3 
+					    if (r3 == v3) {
+					    	c1++;
+					    }
+				    	else if (r3 == v2) {
+					    	e1++;
+				    	}
+				    	else if (r3 == v1) {
+				    		e1++;
+				    	}
+				    	else if (r3 == v4) {
+				    		e1++;
+				    	}  
+				    	else if (r3 == v0){
+				    	    e1++;
+				    	}
+				    	
+				    	//r4 
+				    	if (r4 == v4) {
+					    	c1++;
+				    	}
+				    	else if (r4 == v2) {
+				    		e1++;
+				    	}
+				    	else if (r4 == v3) {
+				    		e1++;
+				    	}
+				    	else if (r4 == v1) {
+				    		e1++;
+				    	}
+				    	else if (r4 == v0){
+				    	    e1++;
+				    	}
 
 						cout << tentativas << "º tentativa ---> ";
 						cout << "Corretos: " << c1 << " Posicao errada: " << e1 << endl;
@@ -287,6 +353,39 @@ int main() {
 //           ╚══════════════════════════════════════╝
 
 					else if (digits == 3) {
+					    
+					    // r2
+                        if (r2 == v2) {
+					    	c1++;
+					    }
+				    	else if (r2 == v3) {
+				    		e1++;
+				    	}
+				    	else if (r2 == v4) {
+				    		e1++;
+					    }
+					    
+					    //r3 
+					    if (r3 == v3) {
+					    	c1++;
+					    }
+				    	else if (r3 == v2) {
+					    	e1++;
+				    	}
+				    	else if (r3 == v4) {
+				    		e1++;
+				    	}  
+				    	
+				    	//r4 
+				    	if (r4 == v4) {
+			   		    	c1++;
+				    	}
+				    	else if (r4 == v2) {
+				    		e1++;
+				    	}
+				    	else if (r4 == v3) {
+				    		e1++;
+				    	}
 
 						cout << tentativas << "º tentativa ---> ";
 						cout << "Corretos: " << c1 << " Posicao errada: " << e1 << endl;
