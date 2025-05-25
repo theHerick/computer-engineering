@@ -1,4 +1,5 @@
-//DEV: HERICK BETIN TIBURSKI
+//DEV: HERICK BETIN TIBURSKI // 25/05/2025
+
 #include <iostream>
 #include <time.h>
 using namespace std;
@@ -9,14 +10,14 @@ int main() {
 // ║          VARIAVEIS INICIAIS          ║
 // ╚══════════════════════════════════════╝
 
-	int enter = 10; // entradas do jogador
+	int enter = 0; // entradas do jogador
 	int tentativas_modo = 10; // tentativas do modo // Conf. Padrão = 10
 	int contador_tentativas; // contador de tentativas
 	int digits = 4; // quantidade de digitos do modo // Conf. Padrão = 4
 	string mode = "Normal"; // modo // Conf. Padrão = Normal
 	char test;
 
-	while (enter != 0) {
+	while (true) {
 
 // ╔══════════════════════════════════════╗
 // ║            MENU PRINCIPAL            ║
@@ -242,8 +243,10 @@ int main() {
 							contador_tentativas++;
 							tentativas++;
 							if (contador_tentativas >= tentativas_modo) {
-								cout << endl << "Voce perdeu o numero era " << v1 << v2 << v3 << v4;
+								cout << endl << "Voce perdeu o numero era " << v1 << v2 << v3 << v4 << endl;
 								cin >> enter;
+								contador_tentativas = tentativas;
+								tentativas = contador_tentativas;
 								system("clear");
 							}
 						}
@@ -272,6 +275,8 @@ int main() {
 							if (contador_tentativas >= tentativas_modo) {
 								cout << endl << "Voce perdeu o numero era " << v0 << v1 << v2 << v3 << v4;
 								cin >> enter;
+								contador_tentativas = tentativas;
+								tentativas = contador_tentativas;
 								system("clear");
 							}
 						}
@@ -300,6 +305,8 @@ int main() {
 							if (contador_tentativas >= tentativas_modo) {
 								cout << endl << "Voce perdeu o numero era " << v2 << v3 << v4;
 								cin >> enter;
+								contador_tentativas = tentativas;
+								tentativas = contador_tentativas;
 								system("clear");
 							}
 						}
@@ -384,6 +391,5 @@ int main() {
 			return 0;
 		}
 
-		enter = 10;
 	}
 }
