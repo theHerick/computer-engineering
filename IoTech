@@ -1,10 +1,12 @@
 import cv2
 import os
+import time
 from ultralytics import YOLO
 
 # === CONFIGURAÇÕES ===
 FOCAL = 250
 REAL_WIDTH = 40.0  # largura média do corpo humano (em cm)
+MAX_DESAPARECIDO = 2.0  # segundos até considerar que a pessoa sumiu
 
 def estimar_distancia(pixel_width):
     if pixel_width == 0:
@@ -25,7 +27,7 @@ def iniciar_terminal():
 iniciar_terminal()
 
 # === CARREGAR MODELO YOLOv8 ===
-modelo = YOLO('yolov8n.pt')  # você pode usar 'yolov8s.pt' para mais precisão
+modelo = YOLO('yolov8n.pt')
 
 # === CAPTURA DE VÍDEO ===
 cap = cv2.VideoCapture(0)
@@ -33,6 +35,8 @@ cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
 
 ultimo_estado = ""
+pessoa_selecionada = None
+tempo_ultima_deteccao = time.time()
 
 while True:
     ret, frame = cap.read()
@@ -45,15 +49,48 @@ while True:
     comando_distancia = "Nada detectado"
     comando_direcao = ""
     info_extra = ""
+    largura_frame = frame.shape[1]
+
+    selecionada = None
+    dist_minima = float('inf')
 
     if pessoas:
-        # Pega a primeira pessoa detectada (ou você pode usar a maior em largura)
-        x1, y1, x2, y2, conf, cls = pessoas[0]
-        x1, y1, x2, y2 = map(int, (x1, y1, x2, y2))
+        centros = []
+
+        for det in pessoas:
+            x1, y1, x2, y2, conf, cls = det
+            cx = (x1 + x2) / 2
+            cy = (y1 + y2) / 2
+            centros.append(((x1, y1, x2, y2), (cx, cy)))
+
+        if pessoa_selecionada is None:
+            # Primeira detecção: selecionar a primeira pessoa detectada
+            pessoa_selecionada = centros[0][1]
+            selecionada = centros[0][0]
+            tempo_ultima_deteccao = time.time()
+        else:
+            # Achar a pessoa mais próxima da posição inicial
+            for (box, centro) in centros:
+                dist = ((centro[0] - pessoa_selecionada[0]) ** 2 + (centro[1] - pessoa_selecionada[1]) ** 2) ** 0.5
+                if dist < dist_minima:
+                    dist_minima = dist
+                    selecionada = box
+
+            if dist_minima < 100:  # tolerância de movimento
+                pessoa_selecionada = ((selecionada[0] + selecionada[2]) / 2,
+                                      (selecionada[1] + selecionada[3]) / 2)
+                tempo_ultima_deteccao = time.time()
+            elif time.time() - tempo_ultima_deteccao > MAX_DESAPARECIDO:
+                # Considerar que a pessoa sumiu e resetar
+                pessoa_selecionada = centros[0][1]
+                selecionada = centros[0][0]
+                tempo_ultima_deteccao = time.time()
+
+    # Se selecionou uma pessoa:
+    if selecionada:
+        x1, y1, x2, y2 = map(int, selecionada)
         w = x2 - x1
-        h = y2 - y1
         centro_x = x1 + w // 2
-        largura_frame = frame.shape[1]
 
         distancia = estimar_distancia(w)
 
@@ -74,9 +111,9 @@ while True:
 
         info_extra = f"Distância: {int(distancia) if distancia else '??'} cm"
 
-        # Desenha a caixa e a label
+        # Desenha a caixa
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-        cv2.putText(frame, f"Pessoa", (x1, y1 - 10),
+        cv2.putText(frame, "Pessoa-alvo", (x1, y1 - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
 
     estado = f"Comando: {comando_distancia}\nDireção: {comando_direcao}\n{info_extra}"
@@ -85,7 +122,7 @@ while True:
         salvar_comando(estado)
         ultimo_estado = estado
 
-    cv2.imshow("Câmera - YOLOv8 Pessoa", frame)
+    cv2.imshow("Câmera - Rastreamento Prioritário", frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
