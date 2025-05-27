@@ -1,11 +1,10 @@
 import cv2
 import os
-import time
 from ultralytics import YOLO
 
 # === CONFIGURAÇÕES ===
 FOCAL = 250
-REAL_WIDTH = 40.0  # largura média do tronco de uma pessoa
+REAL_WIDTH = 40.0  # largura média do corpo humano (em cm)
 
 def estimar_distancia(pixel_width):
     if pixel_width == 0:
@@ -22,12 +21,13 @@ def iniciar_terminal():
     else:
         os.system("x-terminal-emulator -e 'python3 terminal_comando.py' &")
 
-# Iniciar terminal
+# === INICIAR TERMINAL DE COMANDO ===
 iniciar_terminal()
 
-# === MODELO YOLOv8 ===
-model = YOLO("yolov8n.pt")  # use yolov8n para leveza
+# === CARREGAR MODELO YOLOv8 ===
+modelo = YOLO('yolov8n.pt')  # você pode usar 'yolov8s.pt' para mais precisão
 
+# === CAPTURA DE VÍDEO ===
 cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
@@ -39,35 +39,32 @@ while True:
     if not ret:
         continue
 
-    results = model(frame, verbose=False)[0]
+    results = modelo(frame, verbose=False)[0]
+    pessoas = [det for det in results.boxes.data.tolist() if int(det[5]) == 0]  # classe 0 = pessoa
 
     comando_distancia = "Nada detectado"
     comando_direcao = ""
     info_extra = ""
 
-    pessoas = [d for d in results.boxes.data.tolist() if int(d[5]) == 0]  # classe 0 = pessoa
-
     if pessoas:
+        # Pega a primeira pessoa detectada (ou você pode usar a maior em largura)
         x1, y1, x2, y2, conf, cls = pessoas[0]
         x1, y1, x2, y2 = map(int, (x1, y1, x2, y2))
         w = x2 - x1
         h = y2 - y1
-        distancia = estimar_distancia(w)
         centro_x = x1 + w // 2
         largura_frame = frame.shape[1]
 
-        # Caixa ao redor da pessoa
-        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        distancia = estimar_distancia(w)
 
-        # Comando baseado na distância
-        if distancia > 120:
-            comando_distancia = "Andar pra frente"
-        elif distancia < 50:
-            comando_distancia = "Parar / Reduzir"
-        else:
-            comando_distancia = "Seguir mantendo distância"
+        if distancia is not None:
+            if distancia > 100:
+                comando_distancia = "Andar pra frente"
+            elif distancia < 40:
+                comando_distancia = "Parar / Reduzir"
+            else:
+                comando_distancia = "Seguir mantendo distância"
 
-        # Direção baseada na posição
         if centro_x < largura_frame * 0.4:
             comando_direcao = "Vire à esquerda"
         elif centro_x > largura_frame * 0.6:
@@ -75,15 +72,20 @@ while True:
         else:
             comando_direcao = "Siga em frente"
 
-        info_extra = f"Distância: {int(distancia)} cm"
+        info_extra = f"Distância: {int(distancia) if distancia else '??'} cm"
 
-    estado = f"Pessoas detectadas: {len(pessoas)}\nComando: {comando_distancia}\nDireção: {comando_direcao}\n{info_extra}"
+        # Desenha a caixa e a label
+        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        cv2.putText(frame, f"Pessoa", (x1, y1 - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+
+    estado = f"Comando: {comando_distancia}\nDireção: {comando_direcao}\n{info_extra}"
 
     if estado != ultimo_estado:
         salvar_comando(estado)
         ultimo_estado = estado
 
-    cv2.imshow("YOLOv8 - Rastreamento de Pessoa", frame)
+    cv2.imshow("Câmera - YOLOv8 Pessoa", frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
