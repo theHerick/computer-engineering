@@ -80,3 +80,23 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
+
+
+import time
+import os
+
+ARQUIVO_COMANDO = "comando.txt"
+ultimo_texto = ""
+
+while True:
+    if os.path.exists(ARQUIVO_COMANDO):
+        with open(ARQUIVO_COMANDO, "r") as f:
+            texto = f.read().strip()
+
+        if texto != ultimo_texto:
+            os.system("cls" if os.name == "nt" else "clear")
+            print("=== COMANDO ATUAL ===")
+            print(texto)
+            ultimo_texto = texto
+
+    time.sleep(0.5)
