@@ -1,0 +1,82 @@
+import cv2
+import os
+import time
+
+# === CONFIGURAÇÕES ===
+FOCAL = 250
+REAL_WIDTH = 16.0
+
+def estimar_distancia(pixel_width):
+    if pixel_width == 0:
+        return None
+    return (REAL_WIDTH * FOCAL) / pixel_width
+
+def salvar_comando(texto):
+    with open("comando.txt", "w") as f:
+        f.write(texto)
+
+def iniciar_terminal():
+    if os.name == 'nt':  # Windows
+        os.system("start cmd /k python terminal_comando.py")
+    else:  # Linux / Raspberry
+        os.system("x-terminal-emulator -e 'python3 terminal_comando.py' &")
+
+# === INICIAR TERMINAL DE COMANDO ===
+iniciar_terminal()
+
+# === CLASSIFICADOR DE ROSTOS ===
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+
+# === CAPTURA DE VÍDEO ===
+cap = cv2.VideoCapture(0)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
+
+ultimo_estado = ""
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        continue
+
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(gray, 1.1, 5)
+
+    comando_distancia = "Nada detectado"
+    comando_direcao = ""
+    info_extra = ""
+
+    if len(faces) > 0:
+        (x, y, w, h) = faces[0]
+        distancia = estimar_distancia(w)
+        centro_x = x + w // 2
+        largura_frame = frame.shape[1]
+
+        if distancia > 100:
+            comando_distancia = "Andar pra frente"
+        elif distancia < 40:
+            comando_distancia = "Parar / Reduzir"
+        else:
+            comando_distancia = "Seguir mantendo distância"
+
+        if centro_x < largura_frame * 0.4:
+            comando_direcao = "Vire à esquerda"
+        elif centro_x > largura_frame * 0.6:
+            comando_direcao = "Vire à direita"
+        else:
+            comando_direcao = "Siga em frente"
+
+        info_extra = f"Distância: {int(distancia)} cm"
+
+    estado = f"Rostos detectados: {len(faces)}\nComando: {comando_distancia}\nDireção: {comando_direcao}\n{info_extra}"
+
+    if estado != ultimo_estado:
+        salvar_comando(estado)
+        ultimo_estado = estado
+
+    cv2.imshow("Câmera - Rastreamento", frame)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
