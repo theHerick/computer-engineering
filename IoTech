@@ -2,9 +2,8 @@ import cv2
 import os
 import time
 
-# === CONFIGURAÇÕES ===
 FOCAL = 250
-REAL_WIDTH = 16.0
+REAL_WIDTH = 40.0  # largura média de ombros (ajustável)
 
 def estimar_distancia(pixel_width):
     if pixel_width == 0:
@@ -16,18 +15,16 @@ def salvar_comando(texto):
         f.write(texto)
 
 def iniciar_terminal():
-    if os.name == 'nt':  # Windows
+    if os.name == 'nt':
         os.system("start cmd /k python terminal_comando.py")
-    else:  # Linux / Raspberry
+    else:
         os.system("x-terminal-emulator -e 'python3 terminal_comando.py' &")
 
-# === INICIAR TERMINAL DE COMANDO ===
 iniciar_terminal()
 
-# === CLASSIFICADOR DE ROSTOS ===
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+# === CLASSIFICADOR DE CORPO ===
+body_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_fullbody.xml')
 
-# === CAPTURA DE VÍDEO ===
 cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 240)
@@ -40,25 +37,30 @@ while True:
         continue
 
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, 1.1, 5)
+    corpos = body_cascade.detectMultiScale(gray, 1.1, 3)
 
     comando_distancia = "Nada detectado"
     comando_direcao = ""
     info_extra = ""
 
-    if len(faces) > 0:
-        (x, y, w, h) = faces[0]
+    if len(corpos) > 0:
+        (x, y, w, h) = corpos[0]
         distancia = estimar_distancia(w)
         centro_x = x + w // 2
         largura_frame = frame.shape[1]
 
-        if distancia > 100:
+        # Desenhar a caixa no corpo
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+
+        # Comandos baseados na distância
+        if distancia > 120:
             comando_distancia = "Andar pra frente"
-        elif distancia < 40:
+        elif distancia < 50:
             comando_distancia = "Parar / Reduzir"
         else:
             comando_distancia = "Seguir mantendo distância"
 
+        # Comandos baseados na posição horizontal
         if centro_x < largura_frame * 0.4:
             comando_direcao = "Vire à esquerda"
         elif centro_x > largura_frame * 0.6:
@@ -68,35 +70,15 @@ while True:
 
         info_extra = f"Distância: {int(distancia)} cm"
 
-    estado = f"Rostos detectados: {len(faces)}\nComando: {comando_distancia}\nDireção: {comando_direcao}\n{info_extra}"
+    estado = f"Corpos detectados: {len(corpos)}\nComando: {comando_distancia}\nDireção: {comando_direcao}\n{info_extra}"
 
     if estado != ultimo_estado:
         salvar_comando(estado)
         ultimo_estado = estado
 
-    cv2.imshow("Câmera - Rastreamento", frame)
+    cv2.imshow("Câmera - Rastreamento de Corpo", frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
 cap.release()
 cv2.destroyAllWindows()
-
-
-import time
-import os
-
-ARQUIVO_COMANDO = "comando.txt"
-ultimo_texto = ""
-
-while True:
-    if os.path.exists(ARQUIVO_COMANDO):
-        with open(ARQUIVO_COMANDO, "r") as f:
-            texto = f.read().strip()
-
-        if texto != ultimo_texto:
-            os.system("cls" if os.name == "nt" else "clear")
-            print("=== COMANDO ATUAL ===")
-            print(texto)
-            ultimo_texto = texto
-
-    time.sleep(0.5)
