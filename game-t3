@@ -38,10 +38,8 @@ int main() {
 	char x;
 	
 	bool dentroZonaEspecial = false;
+	int Vidas = 3;
 	while (true) {
-	    printf("\033[1;37m");
-		cout << "Vidas:❤️️ ❤️ ❤️ \n";
-		printf("\033[0m");
 		// imprime matriz
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 90; j++) {
@@ -171,10 +169,19 @@ int main() {
 				py = py + 1;
 				m[px][py] = 2;
 			}
+			else if (m[px][py+1] == 8){
+			m[px][py] = 0;
+            px = 1;
+            py = 1;
+            Vidas --;
+            m[px][py] = 2;
+		}
 			break;
 			// default:
 		}
 		// Checa se está na posição especial
+
+		
         if (px == 2 && py == 7) {
             if (!dentroZonaEspecial) {
                 dentroZonaEspecial = true;
@@ -189,6 +196,19 @@ int main() {
                 m[4][8] = 3;
                 m[5][8] = 3;
             }
+        }
+        
+        if (Vidas == 3){
+            cout << "Vidas:❤️️ ❤️ ❤️ \n";
+        }
+        else if (Vidas == 2){
+            cout << "Vidas:❤️️ ❤️ ❤\n";
+        }
+        else if (Vidas == 1){
+            cout << "Vidas:❤️️ ❤ ❤\n";
+        }
+        else if (Vidas == 0){
+            cout << "Vidas:❤ ❤ ❤\n";
         }
 		// coloca o cursor na posiC'C#o inicial
 		SetCursorPos(0, 0);
