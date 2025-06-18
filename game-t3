@@ -92,7 +92,7 @@ int main() {
 			cout << endl;
 		}
 		printf("\033[1;37m");
-		cout << "Nivel 1\n";
+		cout << "Nivel 1 - Sala 1\n";
 		printf("\033[0m");
 		// atualiza jogador
 		x = getch(); // pega a tecla
