@@ -123,6 +123,22 @@ int main() {
                 m[5][8] = 0;
 			    }
 			}
+			else if (m[px-1][py] == 9){
+			    if (m[px-2][py] == 0){
+			    m[px][py] = 0;
+				px = px - 1;
+				m[px][py] = 2;
+				m[px-1][py] = 9;
+			    }
+			    else if (m[px-2][py] == 8){
+			    m[px][py] = 0;
+				px = px - 1;
+				m[px][py] = 2;
+				m[px-1][py] = 9;
+				m[4][21] = 0;
+                m[5][21] = 0;
+			    }
+			}
 			break;
 		case 's':
 			// remove da posiC'C#o antiga
@@ -149,6 +165,23 @@ int main() {
 				m[px+1][py] = 4;
 				m[4][8] = 0;
                 m[5][8] = 0;
+               
+			    }
+			}
+			else if (m[px+1][py] == 9){
+			    if (m[px+2][py] == 0){
+			    m[px][py] = 0;
+				px = px + 1;
+				m[px][py] = 2;
+				m[px+1][py] = 9;
+			    }
+			    else if (m[px+2][py] == 9){
+			    m[px][py] = 0;
+				px = px - 1;
+				m[px][py] = 2;
+				m[px+1][py] = 9;
+				m[4][21] = 0;
+                m[5][21] = 0;
                
 			    }
 			}
@@ -179,6 +212,22 @@ int main() {
 				m[px+1][py] = 4;
 				m[4][8] = 0;
                 m[5][8] = 0;
+			    }
+			}
+			else if (m[px][py-1] == 9){
+			    if (m[px][py-2] == 0){
+			    m[px][py] = 0;
+				py = py - 1;
+				m[px][py] = 2;
+				m[px][py-1] = 9;
+			    }
+			    else if (m[px+2][py] == 8){
+			    m[px][py] = 0;
+				px = px - 1;
+				m[px][py] = 2;
+				m[px+1][py] = 9;
+				m[4][21] = 0;
+                m[5][21] = 0;
 			    }
 			}
 			break;
@@ -223,6 +272,22 @@ int main() {
 				m[px-1][py] = 4;
 				m[4][8] = 0;
                 m[5][8] = 0;
+			    }
+		    }
+		    else if (m[px][py+1] == 9){
+			    if (m[px][py+2] == 0){
+			    m[px][py] = 0;
+				py = py + 1;
+				m[px][py] = 2;
+				m[px][py+1] = 9;
+			    }
+			    else if (m[px-2][py] == 8){
+			    m[px][py] = 0;
+				px = px - 1;
+				m[px][py] = 2;
+				m[px-1][py] = 9;
+				m[4][21] = 0;
+                m[5][21] = 0;
 			    }
 		    }
 			break;
