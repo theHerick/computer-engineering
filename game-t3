@@ -787,7 +787,7 @@ int main() {
             		    system("clear");
             		    main();
             		    break;
-            			// default:
+            			
             		}
 
         		}
@@ -861,7 +861,15 @@ int main() {
             				passos++;
             			}
             			break;
-            			
+/////////////////////// Quit for menu //////////////////////////////////////////
+
+            		case 'q':
+        		        ganhououperdeu = 3;
+        			    Vidas = 0;
+            		    system("clear");
+            		    main();
+            		    break;
+            		    
             			if (pers == 2 or pers == 3){
                 			case '2':
                 			    pers = 3;
@@ -941,6 +949,16 @@ int main() {
             				passos++;
             			}
             			break;
+            			
+/////////////////////// Quit for menu //////////////////////////////////////////
+
+            		case 'q':
+        		        ganhououperdeu = 3;
+        			    Vidas = 0;
+            		    system("clear");
+            		    main();
+            		    break;
+            		    
             			if (pers == 2 or pers == 3){
                 			case '2':
                 			    pers = 3;
